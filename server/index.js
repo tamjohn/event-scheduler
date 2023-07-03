@@ -52,6 +52,18 @@ app.get('/bookings', async (req, res) => {
 
 // delete a booking
 
+app.delete("/bookings/:eid", async (req, res) => {
+    try {
+        const { eid } = req.params;
+        const deleteBooking = await pool.query("DELETE FROM bookings WHERE eid = $1", [
+            eid
+        ]);
+        res.json("booking was deleted!");
+    } catch (err) {
+        console.log(err.message);
+    }
+});
+
 app.listen(5000, () => {
     console.log("server has started on port 5000");
     console.log("test server updates");
