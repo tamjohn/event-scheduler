@@ -9,7 +9,7 @@ app.use(express.json());
 
 //ROUTES//
 
-// create a booking
+// API POST endpoint to create a booking
 app.post("/bookings", async (req, res) => {
     try {
         const { eid, title, start_time, end_time, allDay, resource } = req.body;
@@ -38,7 +38,7 @@ app.post("/bookings", async (req, res) => {
     }
 });
 
-// get all bookings
+// API GET endpoint to get all bookings
 app.get('/bookings', async (req, res) => {
     try {
         const allBookings = await pool.query("SELECT * FROM bookings");
@@ -48,10 +48,62 @@ app.get('/bookings', async (req, res) => {
     }
 });
 
-// update a booking
+// API PUT endpoing to update a booking
+app.put("/bookings/:eid", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { eid, title, start_time, end_time, allDay, resource } = req.body;
 
-// delete a booking
+        // Check if required fields are missing
+        if (!eid || !start_time || !end_time) {
+            return res.status(400).json("Missing required fields");
+        }
 
+        const updateFields = [];
+        const updateValues = [];
+
+        // Build the SET clause for the UPDATE statement
+        updateFields.push("eid = $1");
+        updateValues.push(eid);
+
+        if (title !== null) {
+            updateFields.push("title = $2");
+            updateValues.push(title);
+        }
+
+        updateFields.push("start_time = $3", "end_time = $4");
+        updateValues.push(start_time, end_time);
+
+        // Handle optional fields
+        if (allDay != null) {
+            updateFields.push("allDay = $5");
+            updateValues.push(allDay);
+        }
+        if (resource != null) {
+            updateFields.push("resource = $6");
+            updateValues.push(resource);
+        }
+
+        // Combine the SET clause and the WHERE condition for the UPDATE statement
+        console.log('update fields', updateFields);
+        console.log('update values', updateValues);
+        const updateQuery = `UPDATE bookings SET ${updateFields.join(", ")} WHERE eid = $1`;
+        console.log(updateQuery);
+
+        // Execute the query
+        await pool.query(updateQuery, updateValues);
+
+        // // Retrieve the updated result
+        // const updatedBooking = await pool.query("SELECT * FROM bookings WHERE eid = $1", [id]);
+
+        // res.json(updatedBooking.rows[0]);
+        // console.log(updatedBooking.rows[0]);
+    } catch (err) {
+        console.error(err.message);
+    }
+});
+
+// API DELETE endpoint to remove a booking
 app.delete("/bookings/:eid", async (req, res) => {
     try {
         const { eid } = req.params;
