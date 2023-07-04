@@ -11,6 +11,7 @@ The Multi-Court Booking System is a web application that will allow residents to
 ## Technologies Used
 Front-end:
 - React, JavaScript, HTML, CSS
+  
 Back-end:
 - Node.js, PostgreSQL, Express
 
