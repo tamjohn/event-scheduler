@@ -7,9 +7,10 @@ import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { zhTW } from "date-fns/locale";
 
 const locales = {
-    "en-US": require("date-fns/locale/en-US")
+    "en-CA": require("date-fns/locale/en-CA")
 };
 
 const localizer = dateFnsLocalizer({
@@ -20,14 +21,46 @@ const localizer = dateFnsLocalizer({
     locales,
 });
 
+let formats = {
+    timeGutterFormat: 'HH:mm'
+}
+
+const testDateTime = "2023-07-02T15:30:00.000Z";
+
+function removeTimeZone(datetime) {
+    return datetime.slice(0, -5);
+}
+
+const events = [
+    {
+        id: '2',
+        title: "A303 Basketball",
+        start: new Date(removeTimeZone(testDateTime)),
+        end: new Date("2023-07-02T19:30:00"),
+    },
+    {
+        title: "Vacation",
+        start: new Date("2023-07-05T15:30:00.000Z"),
+        end: new Date("2023-07-05T19:30:00.000Z"),
+    },
+    {
+        title: "Conference",
+        start: new Date(2023, 7, 20),
+        end: new Date(2023, 7, 23),
+    },
+];
+
 function CalendarTemplate() {
     return (
         <div>
+            <h1> EPS Multi-Court Booking</h1>
             <Calendar
                 localizer={localizer}
+                formats={formats}
+                events={events}
                 startAccessor="start"
                 endAccessor="end"
-                style={{ height: 500, margin: "50px" }}
+                style={{ height: 900, margin: "50px" }}
             />
         </div>
     )
