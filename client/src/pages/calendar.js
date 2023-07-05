@@ -8,6 +8,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { zhTW } from "date-fns/locale";
+import { useBookings } from "../hooks/useBookings";
 
 const locales = {
     "en-CA": require("date-fns/locale/en-CA")
@@ -51,13 +52,17 @@ const events = [
 ];
 
 function CalendarTemplate() {
+    const hook = useBookings();
+
+    console.log('booking data', hook.hookBookings);
+
     return (
         <div>
             <h1> EPS Multi-Court Booking</h1>
             <Calendar
                 localizer={localizer}
                 formats={formats}
-                events={events}
+                events={hook.hookBookings}
                 startAccessor="start"
                 endAccessor="end"
                 style={{ height: 900, margin: "50px" }}
