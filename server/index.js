@@ -12,10 +12,10 @@ app.use(express.json());
 // API POST endpoint to create a booking
 app.post("/bookings", async (req, res) => {
     try {
-        const { eid, title, start_time, end_time, allDay, resource } = req.body;
-        const insertValues = [eid, title, start_time, end_time];
+        const { eid, title, start, end_time, allDay, resource } = req.body;
+        const insertValues = [eid, title, start, end_time];
         const valuePlaceholders = ["$1", "$2", "$3", "$4"];
-        const insertColumns = ["eid", "title", "start_time", "end_time"];
+        const insertColumns = ["eid", "title", "start", "end_time"];
 
         if (allDay !== undefined) {
             insertColumns.push("allDay");
@@ -52,10 +52,10 @@ app.get('/bookings', async (req, res) => {
 app.put("/bookings/:eid", async (req, res) => {
     try {
         const { id } = req.params;
-        const { eid, title, start_time, end_time, allDay, resource } = req.body;
+        const { eid, title, start, end_time, allDay, resource } = req.body;
 
         // Check if required fields are missing
-        if (!eid || !start_time || !end_time) {
+        if (!eid || !start || !end_time) {
             return res.status(400).json("Missing required fields");
         }
 
@@ -71,8 +71,8 @@ app.put("/bookings/:eid", async (req, res) => {
             updateValues.push(title);
         }
 
-        updateFields.push("start_time = $3", "end_time = $4");
-        updateValues.push(start_time, end_time);
+        updateFields.push("start = $3", "end_time = $4");
+        updateValues.push(start, end);
 
         // Handle optional fields
         if (allDay != null) {

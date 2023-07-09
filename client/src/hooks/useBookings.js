@@ -15,7 +15,7 @@ export const useBookings = () => {
 
     useEffect(() => {
         getBookings();
-    }, []);
+    }, [bookings]);
 
     return {
         hookBookings: bookings
