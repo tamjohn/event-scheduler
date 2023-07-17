@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 export const useBookings = () => {
     const [bookings, setBookings] = useState([]);
+    const [selectedBooking, setSelectedBooking] = useState();
 
     const getBookings = async () => {
         try {
@@ -13,11 +14,25 @@ export const useBookings = () => {
         }
     };
 
+    const getSingleBooking = async eid => {
+        try {
+            const response = await fetch(`http://localhost:5000/bookings/${eid}`);
+            const data = await response.json();
+            setSelectedBooking(data);
+        } catch (err) {
+            console.log(err.message);
+        }
+    };
+
     useEffect(() => {
         getBookings();
     }, [bookings]);
 
     return {
-        hookBookings: bookings
+        hookBookings: bookings,
+        hookGetBookings: getBookings,
+
+        hookSelectedBooking: selectedBooking,
+        hookSetSelectedBooking: getSingleBooking
     };
 };
