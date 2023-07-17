@@ -48,6 +48,20 @@ app.get('/bookings', async (req, res) => {
     }
 });
 
+// API GET endpoint to ge ta single booking
+app.get('/bookings/:eid', async (req, res) => {
+    try {
+        const { eid } = req.params;
+        const booking = await pool.query('SELECT * FROM bookings WHERE eid = $1', [
+            eid
+        ]);
+
+        res.json(booking.rows[0]);
+    } catch (err) {
+        console.log(err.message);
+    }
+});
+
 // API PUT endpoing to update a booking
 app.put("/bookings/:eid", async (req, res) => {
     try {
