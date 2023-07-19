@@ -8,6 +8,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-datepicker/dist/react-datepicker.css";
 import { useBookings } from "../hooks/useBookings";
 import { AddBookingModal } from "../components/AddBookingModal/addBookingModal";
+import { GetBookingModal } from "../components/GetBookingModal/getBookingModal";
 
 const locales = {
     "en-CA": require("date-fns/locale/en-CA")
@@ -28,13 +29,22 @@ let formats = {
 function CalendarTemplate() {
     const hook = useBookings();
     const [isSlotOpen, setIsSlotOpen] = useState(false);
+    const [isEventModalOpen, setIsEventModalOpen] = useState(false);
 
     const handleSlotClick = () => {
         setIsSlotOpen(!isSlotOpen);
     };
 
-    const handleCloseModal = () => {
+    const handleCloseSlotModal = () => {
         setIsSlotOpen(false);
+    };
+
+    const handleCloseEventModal = () => {
+        setIsEventModalOpen(false);
+    };
+
+    const handleEventClick = () => {
+        setIsEventModalOpen(!isEventModalOpen);
     };
 
     function convertDate(data) {
@@ -57,7 +67,10 @@ function CalendarTemplate() {
             <h1> EPS Multi-Court Booking</h1>
             <div>
                 {isSlotOpen && (
-                    <AddBookingModal isOpen={isSlotOpen} onClose={handleCloseModal} />
+                    <AddBookingModal isOpen={isSlotOpen} onClose={handleCloseSlotModal} />
+                )}
+                {isEventModalOpen && (
+                    <GetBookingModal isOpen={isEventModalOpen} onClose={handleCloseEventModal} />
                 )}
             </div>
             <Calendar
@@ -68,6 +81,7 @@ function CalendarTemplate() {
                 endAccessor="end_time"
                 style={{ height: 900, margin: "50px" }}
                 onSelectSlot={handleSlotClick}
+                onSelectEvent={handleEventClick}
                 selectable
             />
         </div>

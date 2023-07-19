@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export const useBookings = () => {
     const [bookings, setBookings] = useState([]);
     const [selectedBooking, setSelectedBooking] = useState();
+    const [adID, setAdID] = useState()
+    const [description, setDescription] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
 
     const getBookings = async () => {
         try {
@@ -19,6 +23,10 @@ export const useBookings = () => {
             const response = await fetch(`http://localhost:5000/bookings/${eid}`);
             const data = await response.json();
             setSelectedBooking(data);
+            setAdID(data.eid)
+            setDescription(data.title)
+            setStartDate(data.start)
+            setEndDate(data.end_time)
         } catch (err) {
             console.log(err.message);
         }
@@ -26,6 +34,7 @@ export const useBookings = () => {
 
     useEffect(() => {
         getBookings();
+        getSingleBooking();
     }, [bookings]);
 
     return {
@@ -33,6 +42,11 @@ export const useBookings = () => {
         hookGetBookings: getBookings,
 
         hookSelectedBooking: selectedBooking,
-        hookSetSelectedBooking: getSingleBooking
+        hookSetSelectedBooking: getSingleBooking,
+
+        hookAdId: adID,
+        hookDescription: description,
+        hookStartDate: startDate,
+        hookEndDate: endDate
     };
 };
