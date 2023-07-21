@@ -19,7 +19,6 @@ export const useBookings = () => {
         const minutes = String(adjustDate.getMinutes()).padStart(2, '0');
 
         const modifiedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
-        console.log(modifiedDate);
         return modifiedDate;
     };
 
@@ -47,9 +46,20 @@ export const useBookings = () => {
         }
     };
 
+    const setDescriptionHandler = (e) => {
+        setDescription(e.target.value);
+    };
+
+    const setStartDateHandler = (e) => {
+        setStartDate(formatDateToInput(new Date(e.target.value)));
+    }
+
+    const setEndDateHandler = (e) => {
+        setEndDate(formatDateToInput(new Date(e.target.value)));
+    }
+
     useEffect(() => {
         getBookings();
-        getSingleBooking();
     }, [bookings]);
 
     return {
@@ -59,9 +69,15 @@ export const useBookings = () => {
         hookSelectedBooking: selectedBooking,
         hookSetSelectedBooking: getSingleBooking,
 
-        hookAdId: adID,
         hookDescription: description,
+        hookSetDescriptionHandler: setDescriptionHandler,
+
         hookStartDate: startDate,
-        hookEndDate: endDate
+        hookSetStartDateHandler: setStartDateHandler,
+
+        hookEndDate: endDate,
+        hookSetEndDateHandler: setEndDateHandler,
+
+        hookAdId: adID,
     };
 };

@@ -7,7 +7,7 @@ export const GetBookingModal = ({ isOpen, onClose, eid }) => {
 
     useEffect(() => {
         hook.hookSetSelectedBooking(eid);
-    });
+    }, []);
 
     if (!isOpen) {
         return null;
@@ -22,7 +22,7 @@ export const GetBookingModal = ({ isOpen, onClose, eid }) => {
                         <Styled.Input
                             type="text"
                             value={hook.hookDescription}
-                        // onChange={handleInputTitle}
+                            onChange={hook.hookSetDescriptionHandler}
                         />
                     </Styled.FormField>
                     <Styled.FormField>
@@ -30,7 +30,7 @@ export const GetBookingModal = ({ isOpen, onClose, eid }) => {
                         <Styled.Input
                             type="datetime-local"
                             value={hook.hookStartDate}
-                        // onChange={handleStartDate}
+                            onChange={hook.hookSetStartDateHandler}
                         />
                     </Styled.FormField>
                     <Styled.FormField>
@@ -38,7 +38,7 @@ export const GetBookingModal = ({ isOpen, onClose, eid }) => {
                         <Styled.Input
                             type="datetime-local"
                             value={hook.hookEndDate}
-                        // onChange={handleEndDate}
+                            onChange={hook.hookSetEndDateHandler}
                         />
                     </Styled.FormField>
                     <Styled.StyledButton type="submit">Save</Styled.StyledButton>
