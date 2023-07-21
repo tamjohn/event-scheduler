@@ -8,6 +8,21 @@ export const useBookings = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
+    const formatDateToInput = (date) => {
+
+        const adjustDate = new Date(date);
+
+        const year = adjustDate.getFullYear();
+        const month = String(adjustDate.getMonth() + 1).padStart(2, '0');
+        const day = String(adjustDate.getDate()).padStart(2, '0');
+        const hours = String(adjustDate.getHours()).padStart(2, '0');
+        const minutes = String(adjustDate.getMinutes()).padStart(2, '0');
+
+        const modifiedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
+        console.log(modifiedDate);
+        return modifiedDate;
+    };
+
     const getBookings = async () => {
         try {
             const response = await fetch('http://localhost:5000/bookings');
@@ -25,8 +40,8 @@ export const useBookings = () => {
             setSelectedBooking(data);
             setAdID(data.eid)
             setDescription(data.title)
-            setStartDate(data.start)
-            setEndDate(data.end_time)
+            setStartDate(formatDateToInput(data.start))
+            setEndDate(formatDateToInput(data.end_time))
         } catch (err) {
             console.log(err.message);
         }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import format from "date-fns/format";
 import getDay from "date-fns/getDay";
 import parse from "date-fns/parse";
@@ -30,6 +30,7 @@ function CalendarTemplate() {
     const hook = useBookings();
     const [isSlotOpen, setIsSlotOpen] = useState(false);
     const [isEventModalOpen, setIsEventModalOpen] = useState(false);
+    const [eid, setEid] = useState(null)
 
     const handleSlotClick = () => {
         setIsSlotOpen(!isSlotOpen);
@@ -43,8 +44,9 @@ function CalendarTemplate() {
         setIsEventModalOpen(false);
     };
 
-    const handleEventClick = () => {
+    const handleEventClick = (event) => {
         setIsEventModalOpen(!isEventModalOpen);
+        setEid(event.eid);
     };
 
     function convertDate(data) {
@@ -70,7 +72,7 @@ function CalendarTemplate() {
                     <AddBookingModal isOpen={isSlotOpen} onClose={handleCloseSlotModal} />
                 )}
                 {isEventModalOpen && (
-                    <GetBookingModal isOpen={isEventModalOpen} onClose={handleCloseEventModal} />
+                    <GetBookingModal isOpen={isEventModalOpen} onClose={handleCloseEventModal} eid={eid} />
                 )}
             </div>
             <Calendar

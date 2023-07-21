@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as Styled from './styles';
 import { useBookings } from '../../hooks/useBookings';
 
-export const GetBookingModal = ({ isOpen, onClose }) => {
+export const GetBookingModal = ({ isOpen, onClose, eid }) => {
     const hook = useBookings();
+
+    useEffect(() => {
+        hook.hookSetSelectedBooking(eid);
+    });
 
     if (!isOpen) {
         return null;
