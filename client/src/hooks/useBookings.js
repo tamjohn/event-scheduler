@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export const useBookings = () => {
     const [bookings, setBookings] = useState([]);
     const [selectedBooking, setSelectedBooking] = useState();
-    const [adID, setAdID] = useState()
+    const [bookingID, setbookingID] = useState()
     const [description, setDescription] = useState('');
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -37,7 +37,7 @@ export const useBookings = () => {
             const response = await fetch(`http://localhost:5000/bookings/${eid}`);
             const data = await response.json();
             setSelectedBooking(data);
-            setAdID(data.eid)
+            setbookingID(data.eid)
             setDescription(data.title)
             setStartDate(formatDateToInput(data.start))
             setEndDate(formatDateToInput(data.end_time))
@@ -45,6 +45,28 @@ export const useBookings = () => {
             console.log(err.message);
         }
     };
+
+    const updateSingleBooking = async e => {
+        try {
+            const body = {
+                eid: bookingID,
+                title: description,
+                start: startDate,
+                end_time: endDate,
+            };
+            const response = await fetch(`http://localhost:5000/bookings/${bookingID}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(body)
+            })
+            setbookingID(bookingID)
+            setDescription(description)
+            setStartDate(formatDateToInput(startDate))
+            setEndDate(formatDateToInput(endDate))
+        } catch (err) {
+            console.log(err.message);
+        }
+    }
 
     const setDescriptionHandler = (e) => {
         setDescription(e.target.value);
@@ -78,6 +100,8 @@ export const useBookings = () => {
         hookEndDate: endDate,
         hookSetEndDateHandler: setEndDateHandler,
 
-        hookAdId: adID,
+        hookbookingID: bookingID,
+
+        hookUpdateSingleBooking: updateSingleBooking
     };
 };

@@ -7,10 +7,16 @@ export const GetBookingModal = ({ isOpen, onClose, eid }) => {
 
     useEffect(() => {
         hook.hookSetSelectedBooking(eid);
-    }, []);
+    }, [eid]);
 
     if (!isOpen) {
         return null;
+    }
+
+    const handleSubmit = async e => {
+        e.preventDefault();
+        hook.hookUpdateSingleBooking();
+        onClose();
     }
 
     return (
@@ -41,7 +47,7 @@ export const GetBookingModal = ({ isOpen, onClose, eid }) => {
                             onChange={hook.hookSetEndDateHandler}
                         />
                     </Styled.FormField>
-                    <Styled.StyledButton type="submit">Save</Styled.StyledButton>
+                    <Styled.StyledButton type="submit" onClick={handleSubmit}>Save</Styled.StyledButton>
                     <Styled.StyledCancelButton type="submit">Cancel</Styled.StyledCancelButton>
                 </form>
             </Styled.ModalOverlay>

@@ -86,7 +86,7 @@ app.put("/bookings/:eid", async (req, res) => {
         }
 
         updateFields.push("start = $3", "end_time = $4");
-        updateValues.push(start, end);
+        updateValues.push(start, end_time);
 
         // Handle optional fields
         if (allDay != null) {
