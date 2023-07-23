@@ -7,7 +7,7 @@ export const GetBookingModal = ({ isOpen, onClose, eid }) => {
 
     useEffect(() => {
         hook.hookSetSelectedBooking(eid);
-    }, [eid]);
+    }, []);
 
     if (!isOpen) {
         return null;
@@ -16,6 +16,7 @@ export const GetBookingModal = ({ isOpen, onClose, eid }) => {
     const handleSubmit = async e => {
         e.preventDefault();
         hook.hookUpdateSingleBooking();
+        hook.hookGetBookings();
         onClose();
     }
 
